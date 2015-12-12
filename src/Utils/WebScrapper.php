@@ -6,6 +6,7 @@
 namespace Crayon\Utils;
 
 use DOMElement;
+use DOMDocument;
 use Goutte\Client;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -100,16 +101,29 @@ class WebScrapper
         $this->getContent('img', $crawler, $curso, $fullname, $dir);
         $this->getContent('source', $crawler, $curso, $fullname, $dir);
 
-        $sources = $crawler->filter('a.mediafallbacklink');
-        if ($sources->count()) {
+        
+        $parent = $crawler->filter('div.btn-audio');
+
+        if ($parent->count()) {
             /** @var DOMElement $node */
-            foreach ($sources as $node) {
-                // Obtenemos el source de la imagen.
-                $url = $node->getAttribute('href');
-                // La guardamos
-                $filename = basename($url);
-                $filename = urldecode($filename);
-                $node->setAttribute('href', "/src/{$curso}/{$fullname}/$filename");
+            foreach ($parent as $node_div) {
+                $sources = $node_div->getElementsByTagName('a');
+                if ( !empty($sources)) {
+                    /** @var DOMElement $node */
+                    foreach ($sources as $node) {
+                        // Obtenemos el source de la imagen.
+                        $url = $node->getAttribute('href');
+                        $text = $node->textContent;
+                        // La guardamos
+                        $filename = basename($url);
+                        $filename = urldecode($filename);
+                        $node->setAttribute('onclick', "playAudio('/android_asset/www/src/{$curso}/{$fullname}/$text')");
+                        $node->removeAttribute('href');
+                        $node->appendChild($node_div->cloneNode(false));
+                        $node_div->parentNode->insertBefore($node,$node_div->parentNode->childNodes->item(2));
+                        $node_div->parentNode->removeChild($node_div);
+                    }
+                }
             }
         }
 
@@ -119,10 +133,10 @@ class WebScrapper
             foreach ($iframe as $node) {
                 // Obtenemos el source de la imagen.
                 $url   = $node->getAttribute('src');
-                $index = strpos($url, '/iframe/');
+                $index = strpos($url, '/iframe-ingles/');
                 $url   = substr($url, $index, strlen($url) - 1);
                 // La guardamos
-                $node->setAttribute('src', $url);
+                $node->setAttribute('src', '..'.$url);
             }
         }
 
@@ -135,7 +149,7 @@ class WebScrapper
                 $matches = array();
                 preg_match('/id\=(\d+)/', $id, $matches);
                 $id = Utils::getExamIndex($matches[1]);
-                $node->setAttribute('href', "/src/quiz{$id}.html");
+                $node->setAttribute('href', "quiz{$id}.html");
             }
         }
 
@@ -145,7 +159,7 @@ class WebScrapper
             /** @var DOMElement $node */
             foreach ($backto as $node) {
                 // Obtenemos el source de la imagen.
-                $node->setAttribute('href', '/src/mainA1.html');
+                $node->setAttribute('href', 'mainA1.html');
             }
         }
 
@@ -155,7 +169,7 @@ class WebScrapper
             foreach ($backto as $node) {
                 if(strpos($node->getAttribute('src'), '/up') !== FALSE){
                     // Obtenemos el source de la imagen.
-                    $node->setAttribute('src', '/dist/images/up.svg');
+                    $node->setAttribute('src', '../dist/images/up.svg');
                 }
             }
         }
@@ -199,7 +213,7 @@ class WebScrapper
                 if ($this->download) {
                     file_put_contents($path, $item);
                 }
-                $node->setAttribute('src', "/src/{$curso}/{$fullname}/$filename");
+                $node->setAttribute('src', "{$curso}/{$fullname}/$filename");
             }
         }
     }

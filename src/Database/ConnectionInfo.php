@@ -9,10 +9,10 @@ namespace Crayon\Database;
 
 class ConnectionInfo extends ConnectionInfoWrapper
 {
-    const USERNAME = 'root';
-    const PASSWORD = 'dev.i458.mariadb';
+    const USERNAME = 'siec';
+    const PASSWORD = 'ctdev.1xSEGG!';
     const HOST = 'localhost';
-    const DBNAME = 'Ingles';
+    const DBNAME = 'ingles';
 
     /**
      * Composes a DSN string.

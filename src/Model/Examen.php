@@ -48,7 +48,7 @@ class Examen
         /** @var MySqlConnection $dbh */
         $dbh = MySqlConnection::getInstance();
         /** @var \PDOStatement $statement */
-        $statement = $dbh->prepare('SELECT questionid FROM Ingles.mdl_quiz_slots WHERE quizid = :quizid');
+        $statement = $dbh->prepare('SELECT questionid FROM ingles.mdl_quiz_slots WHERE quizid = :quizid');
         $statement->bindParam(':quizid', $this->examen['id']);
         $statement->setFetchMode(PDO::FETCH_ASSOC);
         $statement->execute();
