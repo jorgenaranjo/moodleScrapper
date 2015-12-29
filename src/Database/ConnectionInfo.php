@@ -9,10 +9,10 @@ namespace Crayon\Database;
 
 class ConnectionInfo extends ConnectionInfoWrapper
 {
-    const USERNAME = 'siec';
-    const PASSWORD = 'ctdev.1xSEGG!';
+    const USERNAME = '';
+    const PASSWORD = '';
     const HOST = 'localhost';
-    const DBNAME = 'ingles';
+    const DBNAME = '';
 
     /**
      * Composes a DSN string.
