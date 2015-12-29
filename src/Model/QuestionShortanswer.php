@@ -13,7 +13,17 @@ use Crayon\Utils\Utils;
 
 class QuestionShortanswer extends QuestionWrapper implements QuestionInterface
 {
-    public $answer = NULL;
+    public $answers = array();
+
+    /**
+     * @inheritdoc
+     */
+    public static function create()
+    {
+        $question = parent::create();
+        $question->setQuestionType(QuestionInterface::TYPE_SHORTANSWER);
+        return $question;
+    }
 
     /**
      * Sets answer for current question.
@@ -30,13 +40,5 @@ class QuestionShortanswer extends QuestionWrapper implements QuestionInterface
         $this->answer = reset($matches[0]);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public static function create()
-    {
-        $question = parent::create();
-        $question->setQuestionType(QuestionInterface::TYPE_SHORTANSWER);
-        return $question;
-    }
+
 }

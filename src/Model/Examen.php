@@ -72,32 +72,33 @@ class Examen
     {
         $question = null;
         switch ($question_original['qtype']) {
-            case 'match':
-                return null;
-                //$question = QuestionMatch::create();
-                //$question->setQuestionText($question_original['questiontext']);
-                //$question->setAnswers($question_original['id']);
+            case 'match':   //DONE
+                //return null;
+                $question = QuestionMatch::create();
+                $question->setQuestionText($question_original['questiontext']);
+                $question->setAnswers($question_original['id']);
                 break;
             case 'multianswer':
-                return null;
-                //$question = QuestionMultiAnswer::create();
-                //$question->setQuestionText($question_original['questiontext']);
-                //$question->processQuestion($question_original['id']);
+                //return null;
+                $question = QuestionMultiAnswer::create();
+                $question->setQuestionText($question_original['questiontext']);
+                $question->processQuestion($question_original['id']);
                 break;
-            case 'multichoice':
+            case 'multichoice':  //DONE
+                //return null;
                 $question = QuestionMultichoice::create();
                 $question->setQuestionText($question_original['questiontext']);
                 $question->setAnswers($question_original['id']);
                 break;
             case 'random':
-                return null;
-                //$question = QuestionRandom::GetQuestion($question_original['category']);
+                //return null;
+                $question = QuestionRandom::GetQuestion($question_original['category']);
                 break;
             case 'shortanswer';
-                return null;
-                //$question = QuestionShortanswer::create();
-                //$question->setQuestionText($question_original['questiontext']);
-                //$question->setAnswer($question_original['questiontext']);
+                //return null;
+                $question = QuestionShortanswer::create();
+                $question->setQuestionText($question_original['questiontext']);
+                $question->setAnswer($question_original['questiontext']);
                 break;
         }
 

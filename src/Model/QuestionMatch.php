@@ -21,7 +21,7 @@ class QuestionMatch extends QuestionWrapper implements QuestionInterface
     public static function create()
     {
         $question = parent::create();
-        $question->setQuestionType(QuestionInterface::TYPE_MULTICHOICE);
+        $question->setQuestionType(QuestionInterface::TYPE_MATCH);
         return $question;
     }
 
@@ -34,12 +34,18 @@ class QuestionMatch extends QuestionWrapper implements QuestionInterface
         $statement->setFetchMode(PDO::FETCH_ASSOC);
         $answers = $statement->fetchAll();
 
-        foreach($answers as $answer_original){
-            $answer = AnswerMatch::create();
-            $answer->setTexto($answer_original['questiontext']);
-            $answer->setRespuesta($answer_original['answertext']);
-            $answer->setValue(true);
+        foreach($answers as $answer){
+            $this->answers[] = static::processAnswer($answer);
         }
+    }
+
+    private static function processAnswer($answer_original)
+    {
+        $answer =  AnswerMatch::create();
+        $answer->setTexto($answer_original['questiontext']);
+        $answer->setRespuesta($answer_original['answertext']);
+        $answer->setValue(true);
+        return $answer;
     }
 
 }

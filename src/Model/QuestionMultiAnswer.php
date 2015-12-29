@@ -37,7 +37,7 @@ class QuestionMultiAnswer extends QuestionWrapper implements QuestionInterface
         $questions = explode(',', $questions['sequence']);
         $index = 1;
         foreach($questions as $question){
-            $question = $this->getQuestion($question);
+            $question = static::getQuestion($question);
             if($question instanceof QuestionInterface){
                 $this->subQuestions["#{$index}"] = $question;
                 $index++;
@@ -45,7 +45,7 @@ class QuestionMultiAnswer extends QuestionWrapper implements QuestionInterface
         }
     }
 
-    private function getQuestion($id)
+    private static function getQuestion($id)
     {
         /** @var MySqlConnection $dbh */
         $dbh = MySqlConnection::getInstance();
@@ -55,7 +55,7 @@ class QuestionMultiAnswer extends QuestionWrapper implements QuestionInterface
         $statement->execute();
         $_question = $statement->fetch();
         if (is_array($_question)) {
-            return Examen::instanceQuestion($_question);
+            return Examen::instanceQuestion($_question);;
         }
         return null;
     }
